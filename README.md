@@ -1,4 +1,4 @@
-# Java Library Managment System
+# Java Library Management System
 
 This is a Group Project made by Students from [The British University in Egypt](https://www.bue.edu.eg/)
 
