@@ -9,6 +9,6 @@ public class Main {
         str = scanner.next();
         x = Integer.parseInt(str);
         System.out.println(x);
-        // here please again
+        // here please
     }
 }
