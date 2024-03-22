@@ -1,5 +1,4 @@
 package BookConfigs;
-import BookConfigs.*;
 import UsersInfo.Librarian;
 
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ public class Inventory {
         this.capacity = capacity;
         this.location = location;
         //books = new ArrayList<Book>();
-        booksInInventory = new ArrayList<Book>();
+        booksInInventory = new ArrayList<>();
         totalFine = 0.0;
     }
     public static ArrayList<Book> getBooks() {
@@ -71,14 +70,14 @@ public class Inventory {
 
 
     public static ArrayList<Book> searchBookByTitle(String title){
-        ArrayList<Book> b = new ArrayList<Book>();
+        ArrayList<Book> b = new ArrayList<>();
         for(Book i: books)
             if(i.getTitle().equals(title))
                 b.add(i);
         return b;
     }
      public ArrayList<Book> searchBookInInventory(String title){
-        ArrayList<Book> b = new ArrayList<Book>();
+        ArrayList<Book> b = new ArrayList<>();
         for(Book i: booksInInventory)
             if(i.getTitle().equals(title))
                 b.add(i);
@@ -111,7 +110,8 @@ public class Inventory {
             System.out.println(i.toString());
     }
     public static void viewInventories(){
-
+        for(Inventory i: Librarian.getInventory())
+            System.out.println(i.toString());
     }
     public static Inventory getInventoryByID(int inventoryID){
         for(Inventory i: Librarian.getInventory())

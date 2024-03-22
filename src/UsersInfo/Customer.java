@@ -51,15 +51,14 @@ public class Customer extends User{
         this.totalFine = totalFine;
     }
 
-    public boolean createAccount(String username, String email, String password){
+    public void createAccount(String username, String email, String password){
         this.username = username;
         this.email = email;
         this.password = password;
         this.customerMembership = "Regular";
-        this.borrowedBooks = new ArrayList<Borrow>();
+        this.borrowedBooks = new ArrayList<>();
         this.registrationDate = LocalDate.now();
         this.totalFine = 0.0;
-        return true;
     }
 
     public void manageAccount(){
@@ -76,24 +75,20 @@ public class Customer extends User{
                 case 1:
                     System.out.println("Enter new username: ");
                     new Scanner(System.in);
-                    String newUsername = App.scn.nextLine();
-                    username = newUsername;
+                    username = App.scn.nextLine();
                     break;
                 case 2:
                     System.out.println("Enter new password: ");
                     new Scanner(System.in);
-                    String newPassword = App.scn.nextLine();
-                    password = newPassword;
+                    password = App.scn.nextLine();
                     break;
                 case 3:
                     System.out.println("Enter new membership: ");
                     new Scanner(System.in);
-                    String newMembership = App.scn.nextLine();
-                    customerMembership = newMembership;
+                    customerMembership = App.scn.nextLine();
                     break;
                 case 4:
                     System.out.println("Exited Successfully!");
-                    choice = 0;
                     break mainLabel3;
                 default:
                     System.out.println("Invalid choice");
@@ -102,29 +97,30 @@ public class Customer extends User{
 
 
     }
-    public boolean borrowBook(Borrow book){
+    public void borrowBook(Borrow book){
         if(borrowedBooks.size() < 5){
             if((book.getBook().getAvailability() == Status.AVAILABLE)) {
                 borrowedBooks.add(book);
                 borrowedBooksList.add(book);
                 book.getBook().setAvailability(Status.BORROWED);
-                return true;
             }
             else{
                 System.out.println("Book is Unavailable");
-                return false;
             }
+            return;
         }
         System.out.println("You have reached the maximum limit of borrowing books.");
-        return false;
     }
 
-    public boolean returnBook(Borrow book){
+    public void returnBook(Borrow book){
         boolean found = false;
-
-        for(Borrow i: borrowedBooks)
-            if(i.getBook().equals(book.getBook()))
+        for(Borrow b : borrowedBooks){
+            if(b.getBook().getISBN().equals(book.getBook().getISBN())){
+                book = b;
                 found = true;
+                break;
+            }
+        }
 
         if(found){
             book.getBook().setAvailability(Status.AVAILABLE);
@@ -132,10 +128,8 @@ public class Customer extends User{
             Inventory.setTotalFine(totalFine);
             borrowedBooks.remove(book);
             borrowedBooksList.remove(book);
-            return true;
         }else {
             System.out.println("Book not found in your borrowed list.");
-            return false;
         }
     }
     public void updateBorrowedBook(Borrow book){
@@ -194,7 +188,6 @@ public class Customer extends User{
         account.createAccount(username,email,password1);
 
         Customer.customerPage(account);
-        return;
     }
     public static void customerPage(Customer account){
         while(true) {
@@ -226,7 +219,7 @@ public class Customer extends User{
                         for (Book b : account.searchBookByTitle(title))
                             System.out.println(b.toString());
                     }catch(NullPointerException e){
-                        System.out.println("Error There are no Books in the library: " + e.getMessage());
+                        System.out.println("Error There Book is not in the library");
                     }
                     System.out.println("--------------------------------------------------------------");
                     break;
@@ -257,10 +250,8 @@ public class Customer extends User{
                     do {
                         System.out.println("Enter the ISBN of the book you want to borrow: ");
                         ISBN1 = App.scn.next();
-                        if(Book.verifyISBN(ISBN1))
-                            break;
 
-                    }while(true);
+                    } while (!Book.verifyISBN(ISBN1));
                     Book book;
                     try {
                         book = account.searchBookByISBN(ISBN1);

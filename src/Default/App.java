@@ -1,9 +1,8 @@
 package Default;
 
-import BookConfigs.Book;
 import UsersInfo.Customer;
 import UsersInfo.Librarian;
-import UsersInfo.User;
+
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -11,8 +10,6 @@ public class App {
 
     public static Scanner scn = new Scanner(System.in);
     public static int actorPage(){
-
-
         System.out.println("---------Welcome to our Library Management System-----------");
         System.out.println("-----Visit our github page: https://github.com/AhmedElgalaly/java-Library-MS -----");
         System.out.println("1- Customer sign up");

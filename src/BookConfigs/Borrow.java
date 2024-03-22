@@ -1,7 +1,6 @@
 package BookConfigs;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 // We used LocalDate to store the date of borrowing and returning the book
 // The late fine is calculated based on how late the book is returned
@@ -34,15 +33,16 @@ public class Borrow {
     public Borrow(Book book, LocalDate borrowDate) {
         this.book = book;
         this.borrowDate = borrowDate;
+        this.returnDate = borrowDate.plusDays(7);
     }
     public Borrow(Book book, LocalDate borrowDate, LocalDate returnDate) {
         this(book, borrowDate);
         this.returnDate = returnDate;
-        this.lateFee = lateFee;
         this.isReturned = false;
     }
     public Borrow(Book book, LocalDate borrowDate, LocalDate returnDate, Double lateFee) {
         this(book, borrowDate, returnDate);
+        this.lateFee = lateFee;
         this.isReturned = false;
     }
 
@@ -91,7 +91,7 @@ public class Borrow {
     }
 
     // Method to calculate the late fee for function getLateFee
-    public double calculateLateFee() {
+    public void calculateLateFee() {
         LocalDate currentDate = LocalDate.now();
         if (this.returnDate.isAfter(currentDate)) {
             lateFee = 0.0;
@@ -99,14 +99,15 @@ public class Borrow {
             long days = this.returnDate.toEpochDay() - currentDate.toEpochDay();
             lateFee = days * 0.5;
         }
-        return lateFee;
     }
 
     @Override
     public String toString() {
         return book.toString() + String.format(
-                "\nBorrow Date: %s" +
-                "\nLate fees: %f",
+                """
+
+                        Borrow Date: %s
+                        Late fees: %f""",
                 this.borrowDate.toString(),
                 this.lateFee
         );

@@ -1,18 +1,15 @@
 package UsersInfo;
 import BookConfigs.*;
-import UsersInfo.*;
 
-import java.lang.reflect.GenericArrayType;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.temporal.ChronoField;
 import java.util.ArrayList;
-import java.util.EnumSet;
+import java.util.Objects;
 
 import Default.App;
 
 public class Librarian extends User{
-    private static ArrayList<Inventory> inventory = new ArrayList<>();
+    private static final ArrayList<Inventory> inventory = new ArrayList<>();
     private Double Salary;
     private LocalTime startTime;
     private LocalTime endTime;
@@ -63,7 +60,7 @@ public class Librarian extends User{
     }
     public void addInventory(Inventory inventory)
     {
-        this.inventory.add(inventory);
+        Librarian.inventory.add(inventory);
     }
     public static void removeInventory(int InventoryID)
     {
@@ -146,7 +143,6 @@ public class Librarian extends User{
         account.createAccount(username,email,password1, Character.toUpperCase(gender));
 
         Librarian.LibrarianPage();
-        return;
     }
     public static void LibrarianPage() {
         while (true) {
@@ -164,23 +160,23 @@ public class Librarian extends User{
             App.scn.nextLine();
             switch (choice) {
                 case 1:
-                    System.out.println("enter the invintory ID");
+                    System.out.println("enter the inventory ID");
                     int ID = App.scn.nextInt();
-                    System.out.println("enter the invintory capacity");
+                    System.out.println("enter the inventory capacity");
                     int capacity = App.scn.nextInt();
-                    System.out.println("enter the invintory location");
+                    System.out.println("enter the inventory location");
                     App.scn.nextLine();
                     String location = App.scn.nextLine();
                     Inventory newinventory = new Inventory(ID, capacity, location);
                     inventory.add(newinventory);
-                    System.out.println("inventory successfuly added");
+                    System.out.println("inventory successfully added");
                     break;
                 case 2:
-                    System.out.println("enter the invintory ID");
+                    System.out.println("enter the inventory ID");
                     ID = App.scn.nextInt();
-                    System.out.println("enter the invintory capacity");
+                    System.out.println("enter the inventory capacity");
                     capacity = App.scn.nextInt();
-                    System.out.println("enter the invintory location");
+                    System.out.println("enter the inventory location");
                     App.scn.nextLine();
                     location = App.scn.nextLine();
                     Inventory removeinventory = new Inventory(ID, capacity, location);
@@ -190,11 +186,14 @@ public class Librarian extends User{
                     generateReport();
                     break;
                 case 4:
-
+                    if(inventory.size() == 0)
+                    {
+                        System.out.println("Please add an inventory first!");
+                        break;
+                    }
                     // TODO : Galaly do this ana hftar
                     System.out.println("Enter book title: ");
                     String title = App.scn.nextLine();
-                    App.scn.nextLine();
                     System.out.println("Enter author name: ");
                     String name = App.scn.nextLine();
                     System.out.println("Enter author surname: ");
@@ -248,7 +247,7 @@ public class Librarian extends User{
 
                     mainLabel2:
                     do {
-                        System.out.println("Enter availbaility of The Book: ");
+                        System.out.println("Enter availability of The Book: ");
                         availability = App.scn.next();
 
                         for (Status i : Status.values())
@@ -268,6 +267,11 @@ public class Librarian extends User{
                     int inventoryID = App.scn.nextInt();
                     App.scn.nextLine();
                     Inventory inv_toAdd = Inventory.getInventoryByID(inventoryID);
+                    if(inv_toAdd == null)
+                    {
+                        System.out.println("Please enter a valid inventory ID!");
+                        break;
+                    }
                     inv_toAdd.addBook(newbook);
                     break;
                 case 5:
@@ -280,6 +284,7 @@ public class Librarian extends User{
                     Inventory inv_toRemove = Inventory.getInventoryByID(inventoryID);
                     System.out.println("Enter Book ISBN to remove : ");
                     ISBN = App.scn.nextLine();
+                    assert inv_toRemove != null;
                     inv_toRemove.removeBook(Inventory.searchBookByISBN(ISBN));
                     try {
                         Book.deleteBook(Inventory.searchBookByISBN(ISBN));

@@ -13,7 +13,7 @@ package BookConfigs;
         MUSIC,
         SPORTS,
         OTHER,
-        NONE;
+        NONE
     }
 
 

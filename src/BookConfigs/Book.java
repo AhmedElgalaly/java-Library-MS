@@ -1,8 +1,6 @@
 package BookConfigs;
 
 import UsersInfo.Author;
-import java.util.Objects;
-
 public class Book {
 
     // ATTRIBUTES
@@ -89,7 +87,6 @@ public class Book {
     // TODO: Check if the ISBN-10 is valid or not ✅
     // TODO: Check if the ISBN-13 is valid or not ✅
 
-    // TODO: Explain your code to the idiots
     public static boolean verifyISBN(String ISBN) {
         int ISBNtype = 0;
         ISBN = ISBN.replaceAll("-","");
@@ -118,7 +115,7 @@ public class Book {
     }
 
     public static void deleteBook(Book book) throws Throwable {
-        book.finalize();
+        book = null;
     }
 
 
