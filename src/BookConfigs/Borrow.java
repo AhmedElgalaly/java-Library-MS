@@ -24,6 +24,13 @@ public class Borrow {
     }
 
     // Parameterized constructor
+    public Borrow(Book book) {
+        this.book = book;
+        this.borrowDate = LocalDate.now();
+        this.returnDate = LocalDate.now().plusDays(7);
+        this.lateFee = 0.0;
+        this.isReturned = false;
+    }
     public Borrow(Book book, LocalDate borrowDate) {
         this.book = book;
         this.borrowDate = borrowDate;
@@ -93,5 +100,15 @@ public class Borrow {
             lateFee = days * 0.5;
         }
         return lateFee;
+    }
+
+    @Override
+    public String toString() {
+        return book.toString() + String.format(
+                "\nBorrow Date: %s" +
+                "\nLate fees: %f",
+                this.borrowDate.toString(),
+                this.lateFee
+        );
     }
 }

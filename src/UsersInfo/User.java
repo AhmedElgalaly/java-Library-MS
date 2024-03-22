@@ -9,6 +9,27 @@ abstract public class User{
     protected LocalDate dateOfBirth;
     protected char gender;
 
+
+    public User(String username, String email, String password, String phone, String address, LocalDate dateOfBirth, char gender) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.address = address;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+    }
+
+    public User() {
+        this.username = null;
+        this.email = null;
+        this.password = null;
+        this.phone = null;
+        this.address = null;
+        this.dateOfBirth = null;
+        this.gender = 0;
+    }
+
     public String getUsername() {
         return username;
     }

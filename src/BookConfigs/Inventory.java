@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Inventory {
     // ATTRIBUTES
     private int inventoryID;
-    private static ArrayList<Book> books;
+    private static ArrayList<Book> books = new ArrayList<>();
     private ArrayList<Book> booksInInventory;
     private int capacity;
     private String location;
@@ -21,7 +21,7 @@ public class Inventory {
         this.inventoryID = inventoryID;
         this.capacity = capacity;
         this.location = location;
-        books = new ArrayList<Book>();
+        //books = new ArrayList<Book>();
         booksInInventory = new ArrayList<Book>();
         totalFine = 0.0;
     }
