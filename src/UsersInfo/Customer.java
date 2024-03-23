@@ -1,9 +1,7 @@
 package UsersInfo;
 
-import BookConfigs.Borrow;
-import BookConfigs.Inventory;
-import BookConfigs.Status;
-import BookConfigs.Book;
+import BookConfigs.*;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -213,7 +211,11 @@ public class Customer extends User {
             System.out.println("5- Borrow book");
             System.out.println("6- Update borrowed book");
             System.out.println("7- Cancel borrowed book");
-            System.out.println("8- <-- Back");
+            System.out.println("8- List all books");
+            System.out.println("9- List all books of a specific genre");
+            System.out.println("10- List number of book for a specific author");
+            System.out.println("11- Total number of books");
+            System.out.println("12- <-- Back");
             System.out.println("--------------------------------------------------------------");
             System.out.println("Enter your Choice : ");
             int choice;
@@ -358,8 +360,49 @@ public class Customer extends User {
 
                     break;
 
-                // Back to main menu
                 case 8:
+                    try {
+                        Inventory.displayBooks();
+                    }
+                    catch (Exception e){
+                        System.out.println("there are no books in the library");
+                    }
+                    break;
+                case 9:
+                    for(Genre i: Genre.values()) {
+                        System.out.println(i.toString());
+                        System.out.println("---------------------");
+                        try {
+                            for (Book j : Inventory.getBooks())
+                                if (j.getGenreType().toString().equals(i.toString()))
+                                    System.out.println(j.toString());
+                        }catch (NullPointerException e){
+                            System.out.println("there are no books in the library");
+                        }
+                    }
+                    break;
+                // Back to main menu
+                case 10:
+                    System.out.println("enter the name of the author you want to list his books");
+                    String Name=App.scn.nextLine();
+                    try {
+                        for (Book i : Inventory.getBooks())
+                            if (i.getAuthor().username.equals(Name))
+                                System.out.println(i.toString());
+                    }catch(NullPointerException e){
+                        System.out.println("there are no books in the library");
+                    }
+                    break;
+
+                case 11:
+                    int count =0;
+                    try{
+                        for(Book i: Inventory.getBooks())
+                            count++;
+                    }finally {
+                        System.out.println("there are " + count + " Books in the Library");
+                    }
+                case 12:
                     return;
                 default:
                     System.out.println("Invalid Choice");

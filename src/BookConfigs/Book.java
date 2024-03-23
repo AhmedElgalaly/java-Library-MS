@@ -151,7 +151,7 @@ public class Book {
                         "Availability: %s\n" +
                         "Copies: %d",
                 this.getTitle(),
-                this.getAuthor(),
+                this.getAuthor().toString(),
                 this.getISBN(),
                 this.getGenreType(),
                 this.getAvailability(),

@@ -19,7 +19,7 @@ public class Author extends User {
     // Parameterized constructor
     Author(String name, String surname, LocalDate dateOfBirth) {
         // Initialize with provided name, surname, and date of birth
-        this.username = name + surname;
+        this.username = name + " " + surname;
         this.dateOfBirth = dateOfBirth;
         this.dateOfDeath = null;
         this.biography = null;
@@ -88,5 +88,10 @@ public class Author extends User {
     // Method to remove a book from the author's list of books
     public void removeBook(Book book) {
         books.remove(book);
+    }
+
+    @Override
+    public String toString() {
+        return this.username;
     }
 }

@@ -197,6 +197,9 @@ public class Librarian extends User {
                     System.out.println("enter the inventory capacity");
                     int capacity = App.scn.nextInt();
 
+                    // TODO: don't remove this again ya belal it won't read location if you do
+                    App.scn.nextLine();
+
                     System.out.println("enter the inventory location");
                     String location = App.scn.nextLine();
 
@@ -239,7 +242,7 @@ public class Librarian extends User {
                     System.out.println("Enter book title: ");
                     String title = App.scn.nextLine();
 
-                    System.out.println("Enter author name: ");
+                    System.out.println("Enter author first name: ");
                     String name = App.scn.nextLine();
 
                     System.out.println("Enter author surname: ");

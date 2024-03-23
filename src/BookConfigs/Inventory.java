@@ -124,8 +124,10 @@ public class Inventory {
     // Method to display all books in the entire inventory
     public static void displayBooks() {
 
-        for (Book book : books)
+        for (Book book : books) {
             System.out.println(book.toString());
+            System.out.println("-------------------------");
+        }
 
     }
 
