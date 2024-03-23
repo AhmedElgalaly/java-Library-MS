@@ -1,4 +1,5 @@
 package UsersInfo;
+
 import BookConfigs.Borrow;
 import BookConfigs.Inventory;
 import BookConfigs.Status;
@@ -9,7 +10,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import Default.App;
 
-public class Customer extends User{
+public class Customer extends User {
     private ArrayList<Borrow> borrowedBooks;
     private static ArrayList<Borrow> borrowedBooksList = new ArrayList<>();
     private LocalDate registrationDate;
@@ -17,9 +18,11 @@ public class Customer extends User{
     private Double totalFine;
     private Customer inventory;
 
+    // Getters and Setters
     public static ArrayList<Borrow> getBorrowedBooksList() {
         return borrowedBooksList;
     }
+
     public ArrayList<Borrow> getBorrowedBooks() {
         return borrowedBooks;
     }
@@ -27,12 +30,15 @@ public class Customer extends User{
     public LocalDate getRegistrationDate() {
         return registrationDate;
     }
+
     public String getCustomerMembership() {
         return customerMembership;
     }
+
     public Double getTotalFine() {
         return totalFine;
     }
+
     public void setBorrowedBooks(ArrayList<Borrow> borrowedBooks) {
         this.borrowedBooks = borrowedBooks;
     }
@@ -41,17 +47,16 @@ public class Customer extends User{
         this.registrationDate = registrationDate;
     }
 
-
     public void setCustomerMembership(String customerMembership) {
         this.customerMembership = customerMembership;
     }
-
 
     public void setTotalFine(Double totalFine) {
         this.totalFine = totalFine;
     }
 
-    public void createAccount(String username, String email, String password){
+    // Method to create a customer account
+    public void createAccount(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -61,31 +66,30 @@ public class Customer extends User{
         this.totalFine = 0.0;
     }
 
-    public void manageAccount(){
+    // Method to manage customer account details
+    public void manageAccount() {
+        Scanner scn = new Scanner(System.in);
         mainLabel3:
-        while(true){
+        while (true) {
             System.out.println("1. Change Username");
             System.out.println("2. Change Password");
             System.out.println("3. Change Membership");
             System.out.println("4. Exit");
             System.out.println("Enter your choice: ");
-            int choice = App.scn.nextInt();
-            App.scn.nextLine();
-            switch(choice){
+            int choice = scn.nextInt();
+            scn.nextLine();
+            switch (choice) {
                 case 1:
                     System.out.println("Enter new username: ");
-                    new Scanner(System.in);
-                    username = App.scn.nextLine();
+                    username = scn.nextLine();
                     break;
                 case 2:
                     System.out.println("Enter new password: ");
-                    new Scanner(System.in);
-                    password = App.scn.nextLine();
+                    password = scn.nextLine();
                     break;
                 case 3:
                     System.out.println("Enter new membership: ");
-                    new Scanner(System.in);
-                    customerMembership = App.scn.nextLine();
+                    customerMembership = scn.nextLine();
                     break;
                 case 4:
                     System.out.println("Exited Successfully!");
@@ -94,17 +98,16 @@ public class Customer extends User{
                     System.out.println("Invalid choice");
             }
         }
-
-
     }
-    public void borrowBook(Borrow book){
-        if(borrowedBooks.size() < 5){
-            if((book.getBook().getAvailability() == Status.AVAILABLE)) {
+
+    // Method to borrow a book
+    public void borrowBook(Borrow book) {
+        if (borrowedBooks.size() < 5) {
+            if (book.getBook().getAvailability() == Status.AVAILABLE) {
                 borrowedBooks.add(book);
                 borrowedBooksList.add(book);
                 book.getBook().setAvailability(Status.BORROWED);
-            }
-            else{
+            } else {
                 System.out.println("Book is Unavailable");
             }
             return;
@@ -112,32 +115,36 @@ public class Customer extends User{
         System.out.println("You have reached the maximum limit of borrowing books.");
     }
 
-    public void returnBook(Borrow book){
+    // Method to return a book
+    public void returnBook(Borrow book) {
         boolean found = false;
-        for(Borrow b : borrowedBooks){
-            if(b.getBook().getISBN().equals(book.getBook().getISBN())){
+        for (Borrow b : borrowedBooks) {
+            if (b.getBook().getISBN().equals(book.getBook().getISBN())) {
                 book = b;
                 found = true;
                 break;
             }
         }
 
-        if(found){
+        if (found) {
             book.getBook().setAvailability(Status.AVAILABLE);
             totalFine += book.getLateFee();
             Inventory.setTotalFine(totalFine);
             borrowedBooks.remove(book);
             borrowedBooksList.remove(book);
-        }else {
+        } else {
             System.out.println("Book not found in your borrowed list.");
         }
     }
-    public void updateBorrowedBook(Borrow book){
+
+    // Method to update borrowed book status
+    public void updateBorrowedBook(Borrow book) {
+        Scanner scn = new Scanner(System.in);
         System.out.println("1. Borrow");
         System.out.println("2. Return");
         System.out.println("Enter your choice: ");
-        int choice = App.scn.nextInt();
-        switch(choice){
+        int choice = scn.nextInt();
+        switch (choice) {
             case 1:
                 borrowBook(book);
                 break;
@@ -149,48 +156,55 @@ public class Customer extends User{
         }
     }
 
-    public void viewBorrowedBooks(){
+    // Method to view borrowed books
+    public void viewBorrowedBooks() {
         System.out.println("Borrowed Books: ");
         try {
             for (Borrow book : borrowedBooks) {
-                //System.out.print(book.getBook().getTitle() + " ");
                 System.out.println(book.toString());
             }
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             System.out.println("There are no books");
         }
     }
-    public ArrayList<Book> searchBookByTitle(String title){
 
+    // Method to search for a book by title
+    public ArrayList<Book> searchBookByTitle(String title) {
         return Inventory.searchBookByTitle(title);
     }
-    public Book searchBookByISBN(String ISBN){
+
+    // Method to search for a book by ISBN
+    public Book searchBookByISBN(String ISBN) {
         return Inventory.searchBookByISBN(ISBN);
     }
-    public static void CustomerSignUp(){
+
+    // Method for customer signup
+    public static void CustomerSignUp() {
+        Scanner scn = new Scanner(System.in);
 
         System.out.println("Enter your username: ");
-        String username = App.scn.next();
+        String username = scn.next();
 
         System.out.println("Enter your Email: ");
-        String email = App.scn.next();
+        String email = scn.next();
 
-        String password1,password2;
-
+        String password1, password2;
+        // Loop to confirm password
         do {
             System.out.println("Enter your Password: ");
-            password1 = App.scn.next();
+            password1 = scn.next();
             System.out.println("Confirm your Password: ");
-            password2 = App.scn.next();
-        }while(!password2.equals(password1));
+            password2 = scn.next();
+        } while (!password2.equals(password1));
 
         Customer account = new Customer();
-        account.createAccount(username,email,password1);
+        account.createAccount(username, email, password1);
 
-        Customer.customerPage(account);
+        customerPage(account);
     }
-    public static void customerPage(Customer account){
-        while(true) {
+    // Mathod for customer operations page
+    public static void customerPage(Customer account) {
+        while (true) {
             System.out.println("--------------------------------------------");
             System.out.println("1- Search for book by title");
             System.out.println("2- Search for book by ISBN");
@@ -207,98 +221,144 @@ public class Customer extends User{
                 choice = App.scn.nextInt();
                 System.out.println("--------------------------------------------------------------");
                 App.scn.nextLine();
-            }catch (InputMismatchException e){
+            } catch (InputMismatchException e) {
                 choice = 10;
             }
 
             switch (choice) {
+
+                // Search for book by title
                 case 1:
+
                     System.out.println("Enter the title of the book: ");
                     String title = App.scn.nextLine();
+
                     try {
+
                         for (Book b : account.searchBookByTitle(title))
                             System.out.println(b.toString());
-                    }catch(NullPointerException e){
+
+                    } catch (NullPointerException e) {
                         System.out.println("Error There Book is not in the library");
                     }
+
                     System.out.println("--------------------------------------------------------------");
                     break;
+
+                // Search for book by ISBN
                 case 2:
                     do {
                         System.out.println("Enter the ISBN of the book: ");
                         String ISBN = App.scn.next();
-                        if(Book.verifyISBN(ISBN)) {
+
+                        if (Book.verifyISBN(ISBN)) {
+
                             try {
                                 System.out.println(account.searchBookByISBN(ISBN).toString());
-                            }catch(NullPointerException e){
+                            } catch (NullPointerException e) {
                                 System.out.println("Error There are no Books in the library: " + e.getMessage());
                             }
 
                             break;
-                        }else
+                        } else
                             System.out.println("Wrong ISBN");
-                    }while(true);
+
+                    } while (true);
                     break;
+
+                // View borrowed books
                 case 3:
                     account.viewBorrowedBooks();
                     break;
+
+                // Manage account
                 case 4:
                     account.manageAccount();
                     break;
+
+                // Borrow book
                 case 5:
+
                     String ISBN1;
                     do {
+
                         System.out.println("Enter the ISBN of the book you want to borrow: ");
                         ISBN1 = App.scn.next();
 
                     } while (!Book.verifyISBN(ISBN1));
+
                     Book book;
                     try {
+
                         book = account.searchBookByISBN(ISBN1);
-                    }catch (NullPointerException e){
-                       book = null;
+
+                    } catch (NullPointerException e) {
+
+                        book = null;
+
                     }
 
-                    if(book != null){
+                    if (book != null) {
+
                         Borrow borrow = new Borrow(book, LocalDate.now());
                         account.borrowBook(borrow);
-                    }else{
+
+                    } else {
                         System.out.println("Book not found.");
                     }
 
                     break;
+                // Update borrowed book
                 case 6:
+
                     System.out.println("Enter the ISBN of the book you want to update: ");
                     String ISBN2 = App.scn.next();
+
                     try {
-                    Book book1 = account.searchBookByISBN(ISBN2);
-                    if(book1 != null){
-                        Borrow borrow = new Borrow(book1, LocalDate.now());
-                        account.updateBorrowedBook(borrow);
-                    }else{
-                        System.out.println("Book not found.");
-                    }
-                    }catch (NullPointerException e){
+
+                        Book book1 = account.searchBookByISBN(ISBN2);
+                        if (book1 != null) {
+
+                            Borrow borrow = new Borrow(book1, LocalDate.now());
+                            account.updateBorrowedBook(borrow);
+
+                        } else {
+                            System.out.println("Book not found.");
+                        }
+
+                    } catch (NullPointerException e) {
                         System.out.println("Error There are no Books in the library: " + e.getMessage());
                     }
                     break;
+
+                // Cancel borrowed book
                 case 7:
+
                     System.out.println("Enter the ISBN of the book you want to cancel: ");
                     String ISBN3 = App.scn.next();
                     Book book2;
+
                     try {
+
                         book2 = account.searchBookByISBN(ISBN3);
-                    }catch (NullPointerException e){
-                        book2 =null;
+
+                    } catch (NullPointerException e) {
+
+                        book2 = null;
+
                     }
-                    if(book2 != null) {
+                    if (book2 != null) {
+
                         Borrow borrow = new Borrow(book2, LocalDate.now());
                         account.returnBook(borrow);
-                    }else {
+
+                    } else {
                         System.out.println("Book not found.");
                     }
 
                     break;
+
+                // Back to main menu
                 case 8:
                     return;
                 default:

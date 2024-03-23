@@ -1,5 +1,6 @@
 package UsersInfo;
 import java.time.LocalDate;
+
 abstract public class User{
     protected String username;
     protected String email;

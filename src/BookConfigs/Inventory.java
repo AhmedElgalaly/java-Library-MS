@@ -1,6 +1,6 @@
 package BookConfigs;
-import UsersInfo.Librarian;
 
+import UsersInfo.Librarian;
 import java.util.ArrayList;
 
 public class Inventory {
@@ -10,32 +10,27 @@ public class Inventory {
     private ArrayList<Book> booksInInventory;
     private int capacity;
     private String location;
-
     private static Double totalFine;
-
-    // METHODS
 
     // CONSTRUCTORS
     public Inventory(int inventoryID, int capacity, String location) {
         this.inventoryID = inventoryID;
         this.capacity = capacity;
         this.location = location;
-        //books = new ArrayList<Book>();
         booksInInventory = new ArrayList<>();
         totalFine = 0.0;
     }
-    public static ArrayList<Book> getBooks() {
-        return books;
-    }
-    public ArrayList<Book> getBooksInInventory() {
-        return booksInInventory;
-    }
+
+    // Getters and Setters
+    public static ArrayList<Book> getBooks() { return books; }
     public int getInventoryID() {
         return inventoryID;
     }
+
     public void setInventoryID(int inventoryID) {
         this.inventoryID = inventoryID;
     }
+
     public int getCapacity() {
         return capacity;
     }
@@ -55,68 +50,111 @@ public class Inventory {
     public static Double getTotalFine() {
         return totalFine;
     }
+
     public static void setTotalFine(Double fine) {
         totalFine += fine;
     }
-    public void addBook(Book book){
-        books.add(book);
-        booksInInventory.add(book);
+
+    // Method to add a book to the inventory
+    public void addBook(Book book) {
+
+        books.add(book); // Add the book to the entire inventory
+
+        booksInInventory.add(book); // Add the book to the current inventory
+
     }
 
-    public void removeBook(Book book){
-        books.remove(book);
-        booksInInventory.remove(book);
+    // Method to remove a book from the inventory
+    public void removeBook(Book book) {
+
+        books.remove(book); // Remove the book from the entire inventory
+
+        booksInInventory.remove(book); // Remove the book from the current inventory
+
     }
 
+    // Method to search for books by title in the entire inventory
+    public static ArrayList<Book> searchBookByTitle(String title) {
 
-    public static ArrayList<Book> searchBookByTitle(String title){
-        ArrayList<Book> b = new ArrayList<>();
-        for(Book i: books)
-            if(i.getTitle().equals(title))
-                b.add(i);
-        return b;
-    }
-     public ArrayList<Book> searchBookInInventory(String title){
-        ArrayList<Book> b = new ArrayList<>();
-        for(Book i: booksInInventory)
-            if(i.getTitle().equals(title))
-                b.add(i);
-        return b;
+        ArrayList<Book> foundBooks = new ArrayList<>();
+
+        // Loop through the entire inventory to find the books matching the title
+        for (Book book : books)
+            if (book.getTitle().equals(title))
+                foundBooks.add(book);
+
+        return foundBooks;
     }
 
-    public static Book searchBookByISBN(String ISBN){
+    // Method to search for books by title in the current inventory
+    public ArrayList<Book> searchBookInInventory(String title) {
 
-        for(Book i: books)
-            if(i.getISBN().equals(ISBN))
-                return i;
+        ArrayList<Book> foundBooks = new ArrayList<>();
+
+        // Loop through the current inventory to find the books matching the title
+        for (Book book : booksInInventory)
+            if (book.getTitle().equals(title))
+                foundBooks.add(book);
+
+        return foundBooks;
+    }
+
+    // Method to search for a book by ISBN in the entire inventory
+    public static Book searchBookByISBN(String ISBN) {
+
+        // Loop through the entire inventory to find the book matching the ISBN
+        for (Book book : books)
+            if (book.getISBN().equals(ISBN))
+                return book;
+
         return null;
     }
 
-    public Book searchBookInInventoryByISBN(String ISBN){
-        for(Book i: booksInInventory)
-            if(i.getISBN().equals(ISBN))
-                return i;
+    // Method to search for a book by ISBN in the current inventory
+    public Book searchBookInInventoryByISBN(String ISBN) {
+
+        // Loop through the current inventory to find the book matching the ISBN
+        for (Book book : booksInInventory)
+            if (book.getISBN().equals(ISBN))
+                return book;
+
         return null;
     }
 
+    // Method to display all books in the entire inventory
+    public static void displayBooks() {
 
-    public static void displayBooks(){
-        for(Book i: books)
-            System.out.println(i.toString());
+        for (Book book : books)
+            System.out.println(book.toString());
+
     }
 
-    public void displayBooksInInventory(){
-        for(Book i: booksInInventory)
-            System.out.println(i.toString());
+    // Method to display all books in the current inventory
+    public void displayBooksInInventory() {
+
+        for (Book book : booksInInventory)
+            System.out.println(book.toString());
+            // Call the toString method of the Book class to display the book
+
     }
-    public static void viewInventories(){
-        for(Inventory i: Librarian.getInventory())
-            System.out.println(i.toString());
+
+    // Method to view all inventories
+    public static void viewInventories() {
+
+        // Loop through the inventories to display them using the toString method
+        for (Inventory inventory : Librarian.getInventory())
+            System.out.println(inventory.toString());
+
     }
-    public static Inventory getInventoryByID(int inventoryID){
-        for(Inventory i: Librarian.getInventory())
-            if(i.getInventoryID() == inventoryID)
-                return i;
+
+    // Method to get inventory by ID
+    public static Inventory getInventoryByID(int inventoryID) {
+
+        // Loop through the inventories to find the inventory matching the ID
+        for (Inventory inventory : Librarian.getInventory())
+            if (inventory.getInventoryID() == inventoryID)
+                return inventory;
+
         return null;
     }
 }

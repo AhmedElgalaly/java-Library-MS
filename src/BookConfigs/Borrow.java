@@ -2,8 +2,9 @@ package BookConfigs;
 
 import java.time.LocalDate;
 
-// We used LocalDate to store the date of borrowing and returning the book
-// The late fine is calculated based on how late the book is returned
+// Class representing a borrowed book
+// Uses LocalDate to store borrowing and returning dates
+// Late fee is calculated based on how late the book is returned
 
 public class Borrow {
     // Attributes of the Borrowed Books
@@ -15,6 +16,7 @@ public class Borrow {
 
     // Default constructor
     public Borrow() {
+        // Initialize with default values
         this.book = new Book();
         this.borrowDate = LocalDate.now();
         this.returnDate = LocalDate.now();
@@ -24,30 +26,42 @@ public class Borrow {
 
     // Parameterized constructor
     public Borrow(Book book) {
+        // Initialize with default borrow date and 7 days return date
         this.book = book;
         this.borrowDate = LocalDate.now();
         this.returnDate = LocalDate.now().plusDays(7);
         this.lateFee = 0.0;
         this.isReturned = false;
     }
+
+    // Parameterized constructor with provided borrow date
     public Borrow(Book book, LocalDate borrowDate) {
+        // Initialize with provided borrow date and 7 days return date
         this.book = book;
         this.borrowDate = borrowDate;
         this.returnDate = borrowDate.plusDays(7);
-    }
-    public Borrow(Book book, LocalDate borrowDate, LocalDate returnDate) {
-        this(book, borrowDate);
-        this.returnDate = returnDate;
+        this.lateFee = 0.0;
         this.isReturned = false;
     }
+
+    // Parameterized constructor with provided borrow and return dates
+    public Borrow(Book book, LocalDate borrowDate, LocalDate returnDate) {
+        // Initialize with provided borrow and return dates
+        this(book, borrowDate); // Call parameterized constructor with borrow date (line 52
+        this.returnDate = returnDate;
+        this.lateFee = 0.0;
+        this.isReturned = false;
+    }
+
+    // Parameterized constructor with provided borrow, return dates, and late fee
     public Borrow(Book book, LocalDate borrowDate, LocalDate returnDate, Double lateFee) {
-        this(book, borrowDate, returnDate);
+        // Initialize with provided borrow, return dates, and late fee
+        this(book, borrowDate, returnDate); // Call parameterized constructor with borrow and return dates
         this.lateFee = lateFee;
         this.isReturned = false;
     }
 
     // Getters
-
     public Book getBook() {
         return this.book;
     }
@@ -61,6 +75,7 @@ public class Borrow {
     }
 
     public Double getLateFee() {
+        // Calculate late fee and return
         calculateLateFee();
         return this.lateFee;
     }
@@ -90,19 +105,28 @@ public class Borrow {
         this.isReturned = isReturned;
     }
 
-    // Method to calculate the late fee for function getLateFee
+
+    // Method to calculate the late fee for getLateFee method
     public void calculateLateFee() {
+
         LocalDate currentDate = LocalDate.now();
+
         if (this.returnDate.isAfter(currentDate)) {
+
+            // No late fee if returned on time
             lateFee = 0.0;
         } else {
+
+            // Calculate late fee based on days overdue
             long days = this.returnDate.toEpochDay() - currentDate.toEpochDay();
-            lateFee = days * 0.5;
+            lateFee = days * 0.5; // $0.5 late fee per day
         }
     }
 
+    // Override toString method
     @Override
     public String toString() {
+        // Return string representation of borrowed book details including borrow date and late fee
         return book.toString() + String.format(
                 """
 

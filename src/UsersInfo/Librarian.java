@@ -1,4 +1,5 @@
 package UsersInfo;
+
 import BookConfigs.*;
 
 import java.time.LocalDate;
@@ -8,21 +9,18 @@ import java.util.Objects;
 
 import Default.App;
 
-public class Librarian extends User{
+public class Librarian extends User {
     private static final ArrayList<Inventory> inventory = new ArrayList<>();
     private Double Salary;
     private LocalTime startTime;
     private LocalTime endTime;
     private LocalDate hireDate;
 
-
-    Librarian(String username, String email, String password, String phone
-            ,String address, LocalDate dateOfBirth, char gender, Double salary,
-              LocalTime startDate, LocalTime endDate, LocalDate hireDate)
-    {
+    Librarian(String username, String email, String password, String phone,
+              String address, LocalDate dateOfBirth, char gender, Double salary,
+              LocalTime startDate, LocalTime endDate, LocalDate hireDate) {
 
         super(username, email, password, phone, address, dateOfBirth, gender);
-
 
         Salary = salary;
         this.startTime = startDate;
@@ -31,47 +29,57 @@ public class Librarian extends User{
     }
 
     public Librarian() {
-        this.Salary= 0.0;
+        this.Salary = 0.0;
         this.startTime = null;
         this.endTime = null;
         this.hireDate = null;
     }
 
-    public boolean createAccount(String username, String email, String password, char gender){
+    public boolean createAccount(String username, String email, String password, char gender) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.gender = gender;
-
         this.address = null;
         return true;
     }
+
     public static ArrayList<Inventory> getInventory() {
         return inventory;
     }
-    public Inventory getInventory(int InventoryID)
-    {
-        for (Inventory i : inventory)
-        {
+
+    public Inventory getInventory(int InventoryID) {
+
+        // This method returns the inventory object with the given InventoryID
+        for (Inventory i : inventory) {
             if (i.getInventoryID() == InventoryID)
                 return i;
         }
+
         return null;
     }
-    public void addInventory(Inventory inventory)
-    {
+
+    // This method adds an inventory object to the inventory list
+    public void addInventory(Inventory inventory) {
+
         Librarian.inventory.add(inventory);
+
     }
-    public static void removeInventory(int InventoryID)
-    {
-        for (Inventory i : inventory)
-        {
-            if (i.getInventoryID() == InventoryID)
-            {
+
+    // This method removes an inventory object from the inventory list using the Inventory ID
+    public static void removeInventory(int InventoryID) {
+
+        for (Inventory i : inventory) {
+
+            if (i.getInventoryID() == InventoryID) {
+
                 inventory.remove(i);
                 break;
+
             }
+
         }
+
     }
 
     public Double getSalary() {
@@ -81,9 +89,11 @@ public class Librarian extends User{
     public LocalTime getStartDate() {
         return startTime;
     }
+
     public LocalTime getEndDate() {
         return endTime;
     }
+
     public LocalDate getHireDate() {
         return hireDate;
     }
@@ -91,34 +101,46 @@ public class Librarian extends User{
     public void setSalary(Double salary) {
         Salary = salary;
     }
+
     public void setStartDate(LocalTime startDate) {
         this.startTime = startDate;
     }
+
     public void setEndDate(LocalTime endDate) {
         this.endTime = endDate;
     }
+
     public void setHireDate(LocalDate hireDate) {
         this.hireDate = hireDate;
     }
-    public void setWorkingHour(LocalTime startTime, LocalTime endTime)
-    {
+
+    public void setWorkingHour(LocalTime startTime, LocalTime endTime) {
         this.startTime = startTime;
         this.endTime = endTime;
     }
-    // TODO: DOne 😀
-    public static void generateReport()
-    {
+
+
+    /*
+     * This method generates a report for the library, displaying the total number of books in the library,
+     * the total fare of the books, the total number of books borrowed, and the total number of pending fare.
+     */
+    public static void generateReport() {
+
+        System.out.println("The total number of books in the library : " + Inventory.getBooks().size());
         System.out.println("The total fare of the books : " + Inventory.getTotalFine());
         System.out.println("The total number of books borrowed : " + Customer.getBorrowedBooksList().size());
 
         Double totalFine = 0.0;
-        for(Borrow borrow : Customer.getBorrowedBooksList()) {
+        // Calculate the total fine of the borrowed books
+        for (Borrow borrow : Customer.getBorrowedBooksList()) {
             totalFine += borrow.getLateFee();
         }
+
         System.out.println("The total number of pending fare : " + totalFine);
     }
 
-    public static void LibrarianSignUp(){
+    // This method is used to sign up a librarian to the library system
+    public static void LibrarianSignUp() {
 
         System.out.println("Enter your username: ");
         String username = App.scn.next();
@@ -126,24 +148,29 @@ public class Librarian extends User{
         System.out.println("Enter your Email: ");
         String email = App.scn.next();
 
-        String password1,password2;
+        String password1, password2;
 
         do {
             System.out.println("Enter your Password: ");
             password1 = App.scn.next();
             System.out.println("Confirm your Password: ");
             password2 = App.scn.next();
-        }while(!password2.equals(password1));
+        } while (!password2.equals(password1));
 
 
         System.out.println("Enter Gender: ");
         char gender = App.scn.next().charAt(0);
 
         Librarian account = new Librarian();
-        account.createAccount(username,email,password1, Character.toUpperCase(gender));
+        account.createAccount(username, email, password1, Character.toUpperCase(gender));
 
         Librarian.LibrarianPage();
     }
+
+    /*
+     * This method represents the Librarian page, where a librarian can perform various tasks such as
+     * adding or removing inventory, generating reports, adding books, and removing books.
+     */
     public static void LibrarianPage() {
         while (true) {
             System.out.println("--------------------------------------------");
@@ -158,46 +185,66 @@ public class Librarian extends User{
             int choice = App.scn.nextInt();
             System.out.println("---------------------------------------------------");
             App.scn.nextLine();
+
+
             switch (choice) {
+
+                // This case adds an inventory to the library
                 case 1:
                     System.out.println("enter the inventory ID");
                     int ID = App.scn.nextInt();
+
                     System.out.println("enter the inventory capacity");
                     int capacity = App.scn.nextInt();
+
                     System.out.println("enter the inventory location");
-                    App.scn.nextLine();
                     String location = App.scn.nextLine();
+
                     Inventory newinventory = new Inventory(ID, capacity, location);
                     inventory.add(newinventory);
+
                     System.out.println("inventory successfully added");
                     break;
+
+                // This case removes an inventory from the library
                 case 2:
                     System.out.println("enter the inventory ID");
                     ID = App.scn.nextInt();
+
                     System.out.println("enter the inventory capacity");
                     capacity = App.scn.nextInt();
+
                     System.out.println("enter the inventory location");
                     App.scn.nextLine();
+
                     location = App.scn.nextLine();
                     Inventory removeinventory = new Inventory(ID, capacity, location);
                     inventory.remove(removeinventory);
                     break;
+
+                // This case generates a report for the library
                 case 3:
                     generateReport();
                     break;
+
+                /* This case adds a book to the library. The user is prompted to enter the book title, author name, author surname,
+                 * author date of birth, ISBN, genre type, availability, and the inventory ID to add the book to.
+                 */
                 case 4:
-                    if(inventory.size() == 0)
-                    {
+                    if (inventory.size() == 0) {
                         System.out.println("Please add an inventory first!");
                         break;
                     }
                     // TODO : Galaly do this ana hftar
                     System.out.println("Enter book title: ");
                     String title = App.scn.nextLine();
+
                     System.out.println("Enter author name: ");
                     String name = App.scn.nextLine();
+
                     System.out.println("Enter author surname: ");
                     String surname = App.scn.nextLine();
+
                     System.out.println("Enter author date of birth:day/month/year ");
                     int day = App.scn.nextInt();
                     int month = App.scn.nextInt();
@@ -208,6 +255,7 @@ public class Librarian extends User{
                         month = App.scn.nextInt();
                         year = App.scn.nextInt();
                     }
+
                     LocalDate DOB = LocalDate.of(year, month, day);
 
                     Author bookauthor = new Author(name, surname, DOB);
@@ -233,8 +281,8 @@ public class Librarian extends User{
                         genreType = App.scn.next();
 
 
-                        for (Genre i : Genre.values()){
-                            if(i.toString().equals(genreType.toUpperCase()))
+                        for (Genre i : Genre.values()) {
+                            if (i.toString().equals(genreType.toUpperCase()))
                                 break mainLabel;
                         }
 
@@ -251,7 +299,7 @@ public class Librarian extends User{
                         availability = App.scn.next();
 
                         for (Status i : Status.values())
-                            if(i.toString().equals(availability.toUpperCase()))
+                            if (i.toString().equals(availability.toUpperCase()))
                                 break mainLabel2;
                     } while (true);
 
@@ -266,14 +314,18 @@ public class Librarian extends User{
 
                     int inventoryID = App.scn.nextInt();
                     App.scn.nextLine();
+
                     Inventory inv_toAdd = Inventory.getInventoryByID(inventoryID);
-                    if(inv_toAdd == null)
-                    {
+                    if (inv_toAdd == null) {
                         System.out.println("Please enter a valid inventory ID!");
                         break;
                     }
+
+
                     inv_toAdd.addBook(newbook);
                     break;
+
+                // This case removes a book from the library
                 case 5:
                     System.out.println("Choose inventory to remove book from : ");
                     for (Inventory i : inventory) {
@@ -292,6 +344,8 @@ public class Librarian extends User{
                         throw new RuntimeException(e);
                     }
                     break;
+
+                // This case returns the user to the previous page
                 case 6:
                     return;
                 default:
